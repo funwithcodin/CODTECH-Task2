@@ -1,0 +1,345 @@
+/* This Java code creates a comprehensive library management system with a graphical user interface (GUI) using the Swing framework.
+   The system is designed to allow users to manage various types of library items, including books, magazines, and DVDs, 
+   with functionalities for adding, searching, checking out, and returning items. */
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+class LibraryItem {
+    private String title;
+    private String author;
+    private String category;
+    private boolean isCheckedOut;
+
+    public LibraryItem(String title, String author, String category) {
+        this.title = title;
+        this.author = author;
+        this.category = category;
+        this.isCheckedOut = false;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public boolean isCheckedOut() {
+        return isCheckedOut;
+    }
+
+    public void setCheckedOut(boolean isCheckedOut) {
+        this.isCheckedOut = isCheckedOut;
+    }
+}
+
+class Book extends LibraryItem {
+    public Book(String title, String author, String category) {
+        super(title, author, category);
+    }
+}
+
+class Magazine extends LibraryItem {
+    public Magazine(String title, String author, String category) {
+        super(title, author, category);
+    }
+}
+
+class DVD extends LibraryItem {
+    public DVD(String title, String author, String category) {
+        super(title, author, category);
+    }
+}
+
+class LibraryDatabase {
+    private ArrayList<LibraryItem> items = new ArrayList<>();
+    private Map<String, Integer> bookCounts = new HashMap<>();
+    private Map<String, Integer> magazineCounts = new HashMap<>();
+    private Map<String, Integer> dvdCounts = new HashMap<>();
+
+    public void addItem(LibraryItem item) {
+        items.add(item);
+        incrementItemCount(item);
+    }
+
+    public void incrementItemCount(LibraryItem item) {
+        if (item instanceof Book) {
+            bookCounts.put(item.getTitle(), bookCounts.getOrDefault(item.getTitle(), 0) + 1);
+        } else if (item instanceof Magazine) {
+            magazineCounts.put(item.getTitle(), magazineCounts.getOrDefault(item.getTitle(), 0) + 1);
+        } else if (item instanceof DVD) {
+            dvdCounts.put(item.getTitle(), dvdCounts.getOrDefault(item.getTitle(), 0) + 1);
+        }
+    }
+
+    public void decrementItemCount(LibraryItem item) {
+        if (item instanceof Book) {
+            bookCounts.put(item.getTitle(), bookCounts.get(item.getTitle()) - 1);
+        } else if (item instanceof Magazine) {
+            magazineCounts.put(item.getTitle(), magazineCounts.get(item.getTitle()) - 1);
+        } else if (item instanceof DVD) {
+            dvdCounts.put(item.getTitle(), dvdCounts.get(item.getTitle()) - 1);
+        }
+    }
+
+    public ArrayList<LibraryItem> searchByTitle(String title) {
+        ArrayList<LibraryItem> results = new ArrayList<>();
+        for (LibraryItem item : items) {
+            if (item.getTitle().equalsIgnoreCase(title)) {
+                results.add(item);
+            }
+        }
+        return results;
+    }
+
+    public Map<String, Integer> getBookCounts() {
+        return bookCounts;
+    }
+
+    public Map<String, Integer> getMagazineCounts() {
+        return magazineCounts;
+    }
+
+    public Map<String, Integer> getDvdCounts() {
+        return dvdCounts;
+    }
+
+    public void displaySpecificItemCounts() {
+        StringBuilder output = new StringBuilder();
+        output.append("Book Counts:\n");
+        bookCounts.forEach((title, count) -> output.append(title).append(": ").append(count).append("\n"));
+
+        output.append("\nMagazine Counts:\n");
+        magazineCounts.forEach((title, count) -> output.append(title).append(": ").append(count).append("\n"));
+
+        output.append("\nDVD Counts:\n");
+        dvdCounts.forEach((title, count) -> output.append(title).append(": ").append(count).append("\n"));
+
+        JOptionPane.showMessageDialog(null, output.toString(), "Item Counts", JOptionPane.INFORMATION_MESSAGE);
+    }
+}
+
+class LibrarySystemGUI2 {
+    private JFrame frame;
+    private JTextField titleField;
+    private JTextField authorField;
+    private JTextField categoryField;
+    private JComboBox<String> itemTypeComboBox;
+    private LibraryDatabase db;
+
+    public LibrarySystemGUI2() {
+        db = new LibraryDatabase();
+        frame = new JFrame("Library Management System");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(500, 400);
+        frame.setLayout(new GridBagLayout());
+        frame.getContentPane().setBackground(new Color(240, 240, 240));
+
+        // Create components
+        titleField = new JTextField(20);
+        authorField = new JTextField(20);
+        categoryField = new JTextField(20);
+
+        String[] itemTypes = {"Book", "Magazine", "DVD"};
+        itemTypeComboBox = new JComboBox<>(itemTypes);
+
+        JButton addButton = new JButton("Add Item");
+        JButton searchButton = new JButton("Search Item");
+        JButton checkOutButton = new JButton("Check Out Item");
+        JButton returnButton = new JButton("Return Item");
+        JButton displayCountsButton = new JButton("Display Item Counts");
+        JButton exitButton = new JButton("Exit");
+
+        // Add action listeners
+        addButton.addActionListener(new ButtonClickListener());
+        searchButton.addActionListener(new ButtonClickListener());
+        checkOutButton.addActionListener(new ButtonClickListener());
+        returnButton.addActionListener(new ButtonClickListener());
+        displayCountsButton.addActionListener(new ButtonClickListener());
+        exitButton.addActionListener(new ButtonClickListener());
+
+        // Arrange components in a GridBagLayout
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(5, 5, 5, 5); // Add some padding
+
+        // Item Type
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        frame.add(new JLabel("Select Item Type:"), gbc);
+        gbc.gridx = 1;
+        frame.add(itemTypeComboBox, gbc);
+
+        // Title
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        frame.add(new JLabel("Title:"), gbc);
+        gbc.gridx = 1;
+        frame.add(titleField, gbc);
+
+        // Author
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        frame.add(new JLabel("Author/ Director:"), gbc);
+        gbc.gridx = 1;
+        frame.add(authorField, gbc);
+
+        // Category
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        frame.add(new JLabel("Genre:"), gbc);
+        gbc.gridx = 1;
+        frame.add(categoryField, gbc);
+
+        // Buttons
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        frame.add(addButton, gbc);
+        gbc.gridx = 1;
+        frame.add(searchButton, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        frame.add(checkOutButton, gbc);
+        gbc.gridx = 1;
+        frame.add(returnButton, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        frame.add(displayCountsButton, gbc);
+        gbc.gridx = 1;
+        frame.add(exitButton, gbc);
+
+        // Finalize frame
+        frame.pack(); // Adjusts the frame to fit the components
+        frame.setVisible(true);
+    }
+
+    private void clearFields() {
+        titleField.setText("");
+        authorField.setText("");
+        categoryField.setText("");
+    }
+
+    private class ButtonClickListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String command = e.getActionCommand();
+            String title = titleField.getText();
+            String author = authorField.getText();
+            String category = categoryField.getText();
+            String selectedItemType = (String) itemTypeComboBox.getSelectedItem();
+
+            switch (command) {
+                case "Add Item":
+                    addItem(selectedItemType, title, author, category);
+                    break;
+                case "Search Item":
+                    searchItem(title);
+                    break;
+                case "Check Out Item":
+                    checkOutItem(title);
+                    break;
+                case "Return Item":
+                    returnItem(title);
+                    break;
+                case "Display Item Counts":
+                    db.displaySpecificItemCounts();
+                    break;
+                case "Exit":
+                    System.exit(0);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void addItem(String itemType, String title, String author, String category) {
+            if (title.isEmpty() || author.isEmpty() || category.isEmpty()) {
+                JOptionPane.showMessageDialog(frame, "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            LibraryItem item;
+            switch (itemType) {
+                case "Book":
+                    item = new Book(title, author, category);
+                    break;
+                case "Magazine":
+                    item = new Magazine(title, author, category);
+                    break;
+                case "DVD":
+                    item = new DVD(title, author, category);
+                    break;
+                default:
+                    return; // Should never reach here
+            }
+            db.addItem(item);
+            JOptionPane.showMessageDialog(frame, "Item added successfully.");
+            clearFields();
+        }
+
+        private void searchItem(String title) {
+            ArrayList<LibraryItem> results = db.searchByTitle(title);
+            if (results.isEmpty()) {
+                JOptionPane.showMessageDialog(frame, "Item not found.");
+            } else {
+                StringBuilder resultString = new StringBuilder("Items found:\n");
+                for (LibraryItem item : results) {
+                    resultString.append(item.getTitle()).append(" by ").append(item.getAuthor()).append("\n");
+                }
+                JOptionPane.showMessageDialog(frame, resultString.toString());
+            }
+            clearFields();
+        }
+
+        private void checkOutItem(String title) {
+            ArrayList<LibraryItem> results = db.searchByTitle(title);
+            if (!results.isEmpty()) {
+                LibraryItem item = results.get(0);
+                if (!item.isCheckedOut()) {
+                    item.setCheckedOut(true);
+                    db.decrementItemCount(item);
+                    JOptionPane.showMessageDialog(frame, "Item checked out successfully.");
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Item is already checked out.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(frame, "Item not found.");
+            }
+            clearFields();
+        }
+
+        private void returnItem(String title) {
+            ArrayList<LibraryItem> results = db.searchByTitle(title);
+            if (!results.isEmpty()) {
+                LibraryItem item = results.get(0);
+                if (item.isCheckedOut()) {
+                    item.setCheckedOut(false);
+                    db.incrementItemCount(item);
+                    JOptionPane.showMessageDialog(frame, "Item returned successfully.");
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Item was not checked out.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(frame, "Item not found.");
+            }
+            clearFields();
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(LibrarySystemGUI2::new);
+    }
+}
