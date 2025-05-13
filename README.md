@@ -1,10 +1,3 @@
-Name: MAYUKH BANERJEE
-Company: CODTECH IT SOLUTIONS
-ID: CT3MTDS68
-Domain: Java Programming
-Duration: August 5th to November 5th, 2024
-Mentor: MUZAMMIL AHMED
-
 Overview of the Library Management System Project:
 The Library Management System project is a Java-based application designed to facilitate the management of library resources, including books, magazines, and DVDs. This system provides essential functionalities for adding new items to the library, checking out and returning items, managing overdue fines, and searching for items based on various criteria such as title, author, and category. The application is designed with a graphical user interface (GUI) using Swing, making it user-friendly for both librarians and patrons.
 
