@@ -1,5 +1,5 @@
-Overview of the Library Management System Project:
-The Library Management System project is a Java-based application designed to facilitate the management of library resources, including books, magazines, and DVDs. This system provides essential functionalities for adding new items to the library, checking out and returning items, managing overdue fines, and searching for items based on various criteria such as title, author, and category. The application is designed with a graphical user interface (GUI) using Swing, making it user-friendly for both librarians and patrons.
+Overview of LibraTrack (Library Management System Project):
+LibraTrack is a Java-based application designed to facilitate the management of library resources, including books, magazines, and DVDs. This system provides essential functionalities for adding new items to the library, checking out and returning items, managing overdue fines, and searching for items based on various criteria such as title, author, and category. The application is designed with a graphical user interface (GUI) using Swing, making it user-friendly for both librarians and patrons.
 
 Objectives:
 1. Resource Management: To allow users to manage various types of library resources efficiently.
@@ -53,5 +53,5 @@ Uses a ButtonClickListener inner class to handle button clicks, performing actio
 Launches the application, creating an instance of the library system GUI.
 
 Conclusion:
-The Library Management System project serves as an effective tool for managing library resources. With its user-friendly interface and functional design, it addresses essential library operations while providing room for enhancements, such as integrating persistent data storage. Future iterations could include advanced features like overdue fine calculations, role-based access controls, and more sophisticated search functionalities to improve the overall user experience.
+LibraTrack serves as an effective tool for managing library resources. With its user-friendly interface and functional design, it addresses essential library operations while providing room for enhancements, such as integrating persistent data storage. Future iterations could include advanced features like overdue fine calculations, role-based access controls, and more sophisticated search functionalities to improve the overall user experience.
 ![Captures - File Explorer 05-11-2024 23_14_29](https://github.com/user-attachments/assets/d7473bc9-56ba-4659-bb39-bbf8f96ef447)
